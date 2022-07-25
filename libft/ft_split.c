@@ -3,112 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rrangwan <rrangwan@42abudhabi.ae>          +#+  +:+       +#+        */
+/*   By: rrangwan <rrangwan@42AbuDhabi.AE>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 16:15:23 by rrangwan          #+#    #+#             */
-/*   Updated: 2022/01/01 12:09:43 by rrangwan         ###   ########.fr       */
+/*   Updated: 2022/07/25 20:50:25 by rrangwan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_cnt_wrds(char const *s, char c)
+int	ft_count_word(char *str)
 {
 	int	i;
-	int	cnt;
 
 	i = 0;
-	cnt = 0;
-	while (s[i] != '\0')
+	while (*str)
 	{
-		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
-			cnt++;
-		i++;
+		while (*str && ft_is_space(*str))
+			str++;
+		if (*str && !ft_is_space(*str))
+		{
+			i++;
+			while (*str && !ft_is_space(*str))
+				str++;
+		}
 	}
-	return (cnt);
+	return (i);
 }
 
-static char	*ft_wrd_posi(const char *s, char c, int i)
+char	*ft_malloc_word(char *str)
 {
-	int	j;
-
-	j = 0;
-	while (s[j] == c && s[j + 1] == c)
-		j++;
-	while (s[j + 1] != '\0')
-	{
-		if (i == 0 && s[j] != c && j == 0)
-			return ((char *)&s[j]);
-		if ((s[j] == c && s[j + 1] != c))
-			return ((char *)&s[j + 1]);
-		while (s[j + 1] == c && s[j + 2] == c)
-			j++;
-		j++;
-	}
-	return ((char *)s);
-}
-
-static void	ft_freem(char **wrd, int i)
-{
-	int	j;
-
-	j = 0;
-	while (j < i)
-	{
-		free(wrd[j]);
-		j++;
-	}
-	free(wrd);
-}
-
-static char	*ft_wrd_get(char *s, char c, char **str, int i)
-{
-	char	*wrd;
-	int		j;
-	int		len;
-
-	len = 0;
-	j = 0;
-	while (s[len] != '\0' && s[len] != c)
-		len++;
-	wrd = (char *)malloc(sizeof (char) * (len + 1));
-	if (!wrd)
-	{
-		ft_freem(str, i);
-		return (NULL);
-	}
-	while (j < len)
-	{
-		wrd[j] = s[j];
-		j++;
-	}
-	wrd[j] = '\0';
-	return (wrd);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**str;
-	char	*next_wrd;
 	int		i;
-	int		words;
+	int		j;
+	char	*mal;
 
-	if (!s)
+	i = 0;
+	j = 0;
+	while (str[i] && !ft_is_space(str[i]))
+		i++;
+	mal = malloc((i + 1) * sizeof(char ));
+	if (!mal)
 		return (NULL);
 	i = 0;
-	next_wrd = (char *)s;
-	words = ft_cnt_wrds(s, c);
-	str = (char **)malloc(sizeof(char *) * (words + 1));
-	if (!str)
-		return (NULL);
-	while (i < words)
+	while (str[i] && !ft_is_space(str[i]))
 	{
-		next_wrd = ft_wrd_posi(next_wrd, c, i);
-		str[i] = ft_wrd_get((char *)next_wrd, c, str, i);
-		if (!str[i])
-			return (NULL);
-		i++;
+		mal[j++] = str[i++];
 	}
-	str[i] = NULL;
-	return (str);
+	mal[j] = '\0';
+	return (mal);
+}
+
+char	**ft_split(char *str)
+{
+	int		i;
+	char	**arr;
+
+	i = 0;
+	arr = malloc((ft_count_word(str) + 1) * sizeof( char *));
+	if (!arr)
+		return (NULL);
+	while (*str)
+	{
+		while (*str && ft_is_space(*str))
+			str++;
+		if (*str && !ft_is_space(*str))
+		{
+			arr[i] = ft_malloc_word(str);
+			i++;
+			while (*str && !ft_is_space(*str))
+				str++;
+		}
+
+	}
+	arr[i] = NULL;
+	return (arr);
 }
