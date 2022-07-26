@@ -12,51 +12,51 @@
 
 #include "libft.h"
 
-static	int		fsize(int n)
+static	int	ft_digits(int n)
 {
-	int		ret; = 0;
-	long	r;
+	int		ret;
+	long	l;
 
 	ret = 0;
-	r = n;
-	if(r < 0)
+	l = n;
+	if (l < 0)
 	{
 		ret++;
-		r = -r;
+		l = -l;
 	}
-	while(r>9)
+	while (l > 9)
 	{
 		ret++;
-		r /= 10;
+		l /= 10;
 	}
 	ret++;
-	return(ret);
+	return (ret);
 }
 
-char	*ft_itoa(int r)
+char	*ft_itoa(int d)
 {
 	int		len;
 	long	n;
-	char 	*ret;
+	char	*ret;
 
-	len = fsize(r);
-	n = r;
+	len = ft_digits(d);
+	n = d;
 	ret = (char *)malloc(len + 1);
 	if (!ret)
 		return (NULL);
-	if(n < 0)
+	if (n < 0)
 	{
 		ret[0] = '-';
 		n = -n;
 	}
 	ret[len] = '\0';
 	len--;
-	while(n > 9)
+	while (n > 9)
 	{
 		ret[len] = '0' + (n % 10);
 		n /= 10;
 		len--;
 	}
-	ret[len] = '0' + (n % 10);
+	ret[len] = '0' + n;
 	return (ret);
 }

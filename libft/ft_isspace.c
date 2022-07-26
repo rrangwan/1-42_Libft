@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrangwan <rrangwan@42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/20 16:04:50 by rrangwan          #+#    #+#             */
-/*   Updated: 2022/01/01 11:46:48 by rrangwan         ###   ########.fr       */
+/*   Created: 2021/12/20 16:05:14 by rrangwan          #+#    #+#             */
+/*   Updated: 2021/12/20 16:05:16 by rrangwan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t nbr, size_t size)
+int	ft_isspace(char c)
 {
-	void	*ptr;
-
-	if (size != 0 && nbr > SIZE_MAX / size)
-		return (NULL);
-	ptr = malloc(nbr * size);
-	if (ptr == NULL)
-		return (NULL);
-	ft_bzero(ptr, size * nbr);
-	return (ptr);
+	return (c == ' ' || c == '\t' || c == '\n' \
+	|| c == '\f' || c == '\r' || c == '\v');
 }
